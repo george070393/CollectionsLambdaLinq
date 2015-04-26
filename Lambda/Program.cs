@@ -156,7 +156,7 @@ namespace Lambda
         {
             Console.WriteLine("=====Example 4 (Lambda example)===");
 
-            //Use lamba expression to create a Func delegate instance
+            /*Use lamba expression to create a Func delegate instance
             Func<double, double, double> sum_Function = (double var1, double var2) => var1 + var2;
             
             //Use lambda expression without data type to create a Func delegate instance
@@ -192,7 +192,7 @@ namespace Lambda
 
             //Omitting the explicit creation of a delegate instance
             Console.Write("{0} - {1} = ", val1, val2);
-            SpecialFunctions.ExecuteFunction((var1, var2) => var1 - var2, val1, val2);
+            SpecialFunctions.ExecuteFunction((var1, var2) => var1 - var2, val1, val2); */
 
             List<int> numbersList = new List<int>(new int[] { 0, 1, 2, 6, 8, 9, 21, 24, 10 });
             /**
@@ -201,7 +201,7 @@ namespace Lambda
              * Create a lambda expression which receives two parameters and returns the biggest number
              * and use it to extract the biggest number from numbersList collection.
              */
-            Func<double, double, double> mai_mare = (double par1, double par2) =>
+            Func<int, int, int> mai_mare = (int par1, int par2) =>
             {
                 if (par1 > par2)
                 {
@@ -212,33 +212,67 @@ namespace Lambda
                     return par2;
                 }
             };
-            double max = numbersList[0];
-            foreach (var number in numbersList)
-            {
-                max = mai_mare(number,max);
+           // double max = numbersList[0];
+           // foreach (var number in numbersList)
+           // {
+           //     max = mai_mare(number,max);
                 
-            }
-            Console.WriteLine(max);
+           // }
+            //Console.WriteLine(max);
 
 
             /**
              * TODO 10 (for home)
              * Use the lambda expression from TODO 9  to sort the collection ascending.
              */
-            reloaded:
-            int nr_elemente = numbersList.Count;  //numaram elentele din lista
-            double cel_mai_mare = numbersList[nr_elemente-1]; //setam cel_mai_mare pe ultima pozitie
-            var croopnumbersList = numbersList.Where((c, i) => i != nr_elemente); //evitam elementul cel mai mare la decrementarea lui nr_elemente
             
-            foreach (var number in croopnumbersList)
+            int nr_elemente = numbersList.Count;      //numaram elentele din lista
+            List<int> colectie_sortata = new List<int>(new int[nr_elemente]);    //Cream colectie noua pt elementele sortate
+            reloaded:
+            int max=numbersList[0];   //initializam max
+                        
+            foreach (var number in numbersList)
             {
-                cel_mai_mare = mai_mare(number, cel_mai_mare);
-                nr_elemente--;
+                max = mai_mare(number, max);
+            }
+            numbersList.RemoveAt(numbersList.IndexOf(max));     //stergem max din numberlist,altfel la urmatoarea initializare am aveea acelasi max
+
+            colectie_sortata[nr_elemente - 1] = max;      //adugam max pe ultimul index din colectie_sortata
+
+            nr_elemente--;   //decrementam indexul,nr_elemente joaca acum rolul de index
+
+            
+
+            if (nr_elemente != 1)   //ne asiguram ca indexul nu ajunge negativ
+            {
                 goto reloaded;
             }
 
- 
-            Console.WriteLine(numbersList);
+            numbersList = colectie_sortata;  //transferam elementele sortate in colectia initiala
+            foreach (var number in numbersList)  //verificare
+            {
+               Console.WriteLine(number); 
+            }
+
+
+
+            //evitam elementul cel mai mare la decrementarea lui nr_elemente
+            /* 
+            foreach (var number in croopnumbersList)
+            {
+                double cel_mai_mare = mai_mare(number, max);                
+                cel_mai_mare = numbersList[nr_elemente-1];
+                nr_elemente--;
+
+                goto reloaded;
+            }
+
+            */
+
+
+
+
+            // Console.WriteLine(numbersList);
         }
 
         private static Func<int, int> GetIncFunc()
@@ -267,7 +301,7 @@ namespace Lambda
         static void Main(string[] args)
         {
             //run Delegate example
-            DelegateExample();
+            //DelegateExample();
 
             ////run Func Delegate example
             //FuncDelegateExample();
@@ -276,7 +310,7 @@ namespace Lambda
             //AnonymousFunctExample();
 
             ////run Lambda expressions example
-            //LambdaExample();
+            LambdaExample();
 
             ////run Closure example
             //ClosureExample();
