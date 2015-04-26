@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Lambda.Delegate;
 using System.Collections;
+using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Lambda
 {
@@ -44,13 +46,16 @@ namespace Lambda
 
             //TODO 4: Create an instance of NumberCheck (TODO 1)
 
+            NumberCheck inst = new NumberCheck(SpecialFunctions.even_number);
+
             //TODO 5: Use function GetEvenNumbers to select the even numbers from numbersList collection
             List<int> numbersList = new List<int>(new int[] { 0, 1, 2, 6, 8, 9, 21, 24, 10 });
+            var evenlist = SpecialFunctions.GetEvenNumbers(inst,numbersList);
 
             //TODO 6: Print the resulted numbers
 
 
-            Console.WriteLine();
+            Console.WriteLine(evenlist);
         }
 
         private static void FuncDelegateExample()
@@ -131,6 +136,12 @@ namespace Lambda
              * TODO 8 
              * Create an instance of function created at TODO 2 and use it to print the odd numbers from numbersList collection
              */
+            Func<int, bool> evenFunc = delegate(int p1)
+            {
+                var x =! SpecialFunctions.even_number(p1);
+                return x;
+            };
+
 
             //Omitting the explicit creation of a Func instance
             Console.Write("{0} - {1} = ", val1, val2);
@@ -190,14 +201,44 @@ namespace Lambda
              * Create a lambda expression which receives two parameters and returns the biggest number
              * and use it to extract the biggest number from numbersList collection.
              */
+            Func<double, double, double> mai_mare = (double par1, double par2) =>
+            {
+                if (par1 > par2)
+                {
+                    return par1;
+                }
+                else
+                {
+                    return par2;
+                }
+            };
+            double max = numbersList[0];
+            foreach (var number in numbersList)
+            {
+                max = mai_mare(number,max);
+                
+            }
+            Console.WriteLine(max);
 
 
             /**
              * TODO 10 (for home)
              * Use the lambda expression from TODO 9  to sort the collection ascending.
              */
+            reloaded:
+            int nr_elemente = numbersList.Count;  //numaram elentele din lista
+            double cel_mai_mare = numbersList[nr_elemente-1]; //setam cel_mai_mare pe ultima pozitie
+            var croopnumbersList = numbersList.Where((c, i) => i != nr_elemente); //evitam elementul cel mai mare la decrementarea lui nr_elemente
+            
+            foreach (var number in croopnumbersList)
+            {
+                cel_mai_mare = mai_mare(number, cel_mai_mare);
+                nr_elemente--;
+                goto reloaded;
+            }
+
  
-            Console.WriteLine();
+            Console.WriteLine(numbersList);
         }
 
         private static Func<int, int> GetIncFunc()
