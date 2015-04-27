@@ -212,67 +212,49 @@ namespace Lambda
                     return par2;
                 }
             };
-           // double max = numbersList[0];
+           // double maxim = numbersList[0];
            // foreach (var number in numbersList)
            // {
-           //     max = mai_mare(number,max);
+           //     maxim = mai_mare(number,max);
                 
            // }
-            //Console.WriteLine(max);
+           //Console.WriteLine(max);
 
 
             /**
              * TODO 10 (for home)
              * Use the lambda expression from TODO 9  to sort the collection ascending.
              */
-            
-            int nr_elemente = numbersList.Count;      //numaram elentele din lista
-            List<int> colectie_sortata = new List<int>(new int[nr_elemente]);    //Cream colectie noua pt elementele sortate
-            reloaded:
-            int max=numbersList[0];   //initializam max
-                        
-            foreach (var number in numbersList)
-            {
-                max = mai_mare(number, max);
-            }
-            numbersList.RemoveAt(numbersList.IndexOf(max));     //stergem max din numberlist,altfel la urmatoarea initializare am aveea acelasi max
 
-            colectie_sortata[nr_elemente - 1] = max;      //adugam max pe ultimul index din colectie_sortata
 
-            nr_elemente--;   //decrementam indexul,nr_elemente joaca acum rolul de index
+     int nr_elemente = numbersList.Count;                                                //numaram elementele din lista
+     
+     for (int i = nr_elemente-1; i > 1; i--)                                             
+     {          
+          int max = i;
+          for (int j = i-1; j >0; j--)                                                  
+          {
+             max=numbersList.IndexOf( mai_mare(numbersList[j], numbersList[max]));
+                   
+          }
 
-            
+          int temp = numbersList[i];                                                    //variabila temporara,ne volosim de ea pentr a interschimba elementele
+          numbersList[i] = numbersList[max];
+          numbersList[max] = temp;
+     }
 
-            if (nr_elemente != 1)   //ne asiguram ca indexul nu ajunge negativ
-            {
-                goto reloaded;
-            }
-
-            numbersList = colectie_sortata;  //transferam elementele sortate in colectia initiala
-            foreach (var number in numbersList)  //verificare
+            foreach (var number in numbersList)                                         //verificare
             {
                Console.WriteLine(number); 
             }
 
-
-
-            //evitam elementul cel mai mare la decrementarea lui nr_elemente
-            /* 
-            foreach (var number in croopnumbersList)
-            {
-                double cel_mai_mare = mai_mare(number, max);                
-                cel_mai_mare = numbersList[nr_elemente-1];
-                nr_elemente--;
-
-                goto reloaded;
-            }
-
-            */
+            
+            
+          
 
 
 
-
-            // Console.WriteLine(numbersList);
+            
         }
 
         private static Func<int, int> GetIncFunc()
